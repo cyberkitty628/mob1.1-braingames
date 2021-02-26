@@ -13,9 +13,11 @@ struct ContentView: View {
         ZStack {
             Image("space2")
                 .edgesIgnoringSafeArea(.all)
+            
             VStack(alignment: .center, spacing: 20){
                 Text("Brain Games")
-                    .font(.largeTitle)
+                    .font(.system(size: 35, weight: .semibold, design:.rounded))
+                    .frame(minWidth: 0, maxWidth: .infinity)
                     .padding(.top, 15)
                     .padding(.bottom, 15)
                     .padding(.leading, 35)
@@ -26,28 +28,35 @@ struct ContentView: View {
                 Image("Brain")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 150,height:150)
+                    .frame(width: 180,height:180)
                 Text("Does the meaning match the text color?")
-                    .font(.title2)
+                    .frame(width: 300)
+                    .multilineTextAlignment(.center)
+                    .font(.system(size: 25, weight: .light, design:.rounded))
+                    .foregroundColor(.white)
+                    
                 VStack{
                 Text("Blue")
                     .frame(width: 160)
-                    .font(.title)
+                    .font(.system(size: 28, design:.rounded))
                     .padding(.top, 15)
                     .padding(.bottom, 15)
                     .padding(.leading, 30)
                     .padding(.trailing, 30)
                     .background(Color.white)
+                    .padding(5)
                 Text("Red")
                     .frame(width: 160)
-                    .font(.title)
+                    .font(.system(size: 28, design:.rounded))
                     .padding(.top, 15)
                     .padding(.bottom, 15)
                     .padding(.leading, 30)
                     .padding(.trailing, 30)
                     .background(Color.white)
                     .foregroundColor(.purple)
+                    .padding(5)
                 }
+                
                 HStack{
                     
                     Button(action: {}, label: {
@@ -57,7 +66,7 @@ struct ContentView: View {
                             .frame(width: 20,height:20)
                         Text("Yes")
                     })
-                        .font(.title2)
+                    .font(.system(size: 25, weight: .semibold, design:.rounded))
                         .frame(width: 80)
                         .padding(.top, 10)
                         .padding(.bottom, 10)
@@ -66,6 +75,7 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .background(LinearGradient(gradient: Gradient(colors: [Color.orange, Color.yellow]), startPoint: .leading, endPoint: .trailing))
                         .cornerRadius(10)
+                        .padding(5)
                     
                     Button(action: {}, label: {
                         Image("no")
@@ -74,7 +84,7 @@ struct ContentView: View {
                             .frame(width: 20,height:20)
                         Text("No")
                     })
-                    .font(.title2)
+                    .font(.system(size: 25, weight: .semibold, design:.rounded))
                     .frame(width: 80)
                     .padding(.top, 10)
                     .padding(.bottom, 10)
@@ -83,6 +93,7 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .background(LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.orange]), startPoint: .leading, endPoint: .trailing))
                     .cornerRadius(10)
+                    .padding(5)
                 }
             }
         }
