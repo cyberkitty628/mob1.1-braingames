@@ -59,15 +59,15 @@ enum ColorOptions: CaseIterable {
     }
 }
 
-
 struct ContentView: View {
     
     @State var topColor = ColorOptions()
     @State var bottomColor = ColorOptions()
     @State var bottomTextColor = ColorOptions()
+    @State var playTime = 0
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        
         ZStack {
             Image("space2")
                 .edgesIgnoringSafeArea(.all)
@@ -157,8 +157,14 @@ struct ContentView: View {
                     .cornerRadius(10)
                     .padding(5)
                 }
-                VStack(alignment: .center, spacing: 20){
-                    Text("Score:")
+                
+                HStack(alignment: .center, spacing: 20){
+                    Text("Score: 0 | Time Played: \(playTime) secs")
+                        .onReceive(timer) { _ in
+                            if playTime >= 0 {
+                                playTime += 1
+                            }
+                        }
                         .font(.system(size: 20, weight: .semibold, design:.rounded))
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .padding(.top, 10)
@@ -182,6 +188,23 @@ struct ContentView: View {
         }
         else{
             print("You lost a point.")
+        }
+        
+        topColor = ColorOptions()
+        bottomColor = ColorOptions()
+        bottomTextColor = ColorOptions()
+    }
+    
+    func updateScore(answer: Bool){
+        var score = 0
+        if topColor == bottomTextColor && answer{
+            score += 5
+        }
+        else if topColor != bottomTextColor && !answer{
+            score += 5
+        }
+        else{
+            score -= 1
         }
         
         topColor = ColorOptions()
