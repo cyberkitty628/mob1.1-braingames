@@ -64,8 +64,9 @@ struct ContentView: View {
     @State var topColor = ColorOptions()
     @State var bottomColor = ColorOptions()
     @State var bottomTextColor = ColorOptions()
-    @State var playTime = 0
+    @State var playTime = 30
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var score: Int = 0
     
     var body: some View {
         ZStack {
@@ -159,10 +160,14 @@ struct ContentView: View {
                 }
                 
                 HStack(alignment: .center, spacing: 20){
-                    Text("Score: 0 | Time Played: \(playTime) secs")
+                    Text("Score: \(score) | Time Left: \(playTime) secs")
                         .onReceive(timer) { _ in
-                            if playTime >= 0 {
-                                playTime += 1
+                            if playTime > 0 {
+                                playTime -= 1
+                            }
+                            else if playTime == 0 {
+                                print("Game over.")
+                                self.timer.upstream.connect().cancel()
                             }
                         }
                         .font(.system(size: 20, weight: .semibold, design:.rounded))
@@ -182,28 +187,14 @@ struct ContentView: View {
     func checkAnswer(answer: Bool){
         if topColor == bottomTextColor && answer{
             print("You got a point!")
+            score += 5
         }
         else if topColor != bottomTextColor && !answer{
             print("You got a point!")
+            score += 5
         }
         else{
             print("You lost a point.")
-        }
-        
-        topColor = ColorOptions()
-        bottomColor = ColorOptions()
-        bottomTextColor = ColorOptions()
-    }
-    
-    func updateScore(answer: Bool){
-        var score = 0
-        if topColor == bottomTextColor && answer{
-            score += 5
-        }
-        else if topColor != bottomTextColor && !answer{
-            score += 5
-        }
-        else{
             score -= 1
         }
         
@@ -211,6 +202,7 @@ struct ContentView: View {
         bottomColor = ColorOptions()
         bottomTextColor = ColorOptions()
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
