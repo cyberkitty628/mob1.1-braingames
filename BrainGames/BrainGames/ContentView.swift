@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Enum to store all color options + text associated
 enum ColorOptions: CaseIterable {
     case Red
     case Yellow
@@ -54,6 +55,7 @@ enum ColorOptions: CaseIterable {
         }
     }
     
+    // Displays random color combo in the interface
     init(){
         self = ColorOptions.allCases[Int.random(in: 0..<ColorOptions.allCases.count)]
     }
@@ -61,18 +63,24 @@ enum ColorOptions: CaseIterable {
 
 struct ContentView: View {
     
+    // List off variables to be used each time game refreshes
+    // Color Options
     @State var topColor = ColorOptions()
     @State var bottomColor = ColorOptions()
     @State var bottomTextColor = ColorOptions()
+    // Timer
     @State var playTime = 30
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    // Score
     @State var score: Int = 0
     
     var body: some View {
+        // Background image
         ZStack {
             Image("space2")
                 .edgesIgnoringSafeArea(.all)
             
+            // Game title, image and description
             VStack(alignment: .center, spacing: 20){
                 Text("Brain Games")
                     .font(.system(size: 35, weight: .semibold, design:.rounded))
@@ -94,6 +102,7 @@ struct ContentView: View {
                     .font(.system(size: 25, weight: .light, design:.rounded))
                     .foregroundColor(.white)
                 
+                // Top and bottom text to be used for comparing in the game
                 VStack{
                     Text("\(topColor.colorAsText)")
                         .frame(width: 160)
@@ -116,8 +125,9 @@ struct ContentView: View {
                         .padding(5)
                 }
                 
+                // Yes and no buttons
                 HStack{
-                    
+                    // Yes button
                     Button(action: {
                         checkAnswer(answer: true)
                     }, label: {
@@ -137,7 +147,7 @@ struct ContentView: View {
                     .background(LinearGradient(gradient: Gradient(colors: [Color.orange, Color.yellow]), startPoint: .leading, endPoint: .trailing))
                     .cornerRadius(10)
                     .padding(5)
-                    
+                    // No button
                     Button(action: {
                         checkAnswer(answer: false)
                     }, label: {
@@ -159,8 +169,11 @@ struct ContentView: View {
                     .padding(5)
                 }
                 
+                // Score and timer bar
                 HStack(alignment: .center, spacing: 20){
                     Text("Score: \(score) | Time Left: \(playTime) secs")
+                        // Using if statement to keep timer running while time is greater than zero
+                        // Stops timer and displays 'Game over' message when it reaches zero
                         .onReceive(timer) { _ in
                             if playTime > 0 {
                                 playTime -= 1
@@ -184,6 +197,8 @@ struct ContentView: View {
         }
     }
     
+    // Function to check if answer is right and wrong
+    // Adds 5 points if user is right, deducts a point when wrong
     func checkAnswer(answer: Bool){
         if topColor == bottomTextColor && answer{
             print("You got a point!")
